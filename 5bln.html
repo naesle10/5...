@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>5 BULAN YAY!!!</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Pixel Text and Clean Modal Text -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .pixel-font {
+            font-family: 'Press Start 2P', monospace;
+        }
+
+        canvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        /* Custom scrollbars for modals */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(244, 114, 182, 0.6);
+            border-radius: 4px;
+        }
+
+        .retro-box {
+            border: 4px solid #fff;
+            box-shadow: 4px 4px 0px #000;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <!-- Top Navigation & Controls Header -->
+    <header
+        class="w-full bg-slate-900/90 border-b border-pink-500/30 px-4 py-3 flex justify-between items-center z-20 backdrop-blur-md">
+        <div class="flex items-center space-x-3">
+            <span class="text-2xl animate-bounce">💖</span>
+            <div>
+                <h1 class="pixel-font text-xs sm:text-sm text-pink-400">10/11/2026</h1>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2 sm:space-x-4">
+            <!-- Audio Toggle Button -->
+            <button id="audioBtn"
+                class="bg-pink-600 hover:bg-pink-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition">
+                <span id="audioIcon">🎵</span>
+                <span id="audioText">Music On</span>
+            </button>
+            <!-- Date Settings Toggle -->
+            <button id="settingsBtn"
+                class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg text-xs transition">
+                ⚙️ Date Settings
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Game Canvas Container -->
+    <main class="relative flex-1 flex items-center justify-center p-2 sm:p-4 w-full max-w-6xl mx-auto">
+        <div
+            class="relative w-full aspect-[16/9] max-h-[75vh] bg-black rounded-2xl overflow-hidden shadow-2xl shadow-pink-950/40 border-2 border-pink-500/30">
+            <!-- Game Canvas -->
+            <canvas id="gameCanvas" class="w-full h-full block"></canvas>
+
+            <!-- On-Screen Action Overlay (Shows when near triggers) -->
+            <div id="actionPrompt"
+                class="hidden absolute bottom-16 left-1/2 -translate-x-1/2 bg-slate-900/90 border-2 border-pink-400 text-pink-200 px-4 py-2 rounded-xl text-center shadow-lg backdrop-blur-md animate-pulse">
+                <p id="actionPromptText" class="pixel-font text-xs sm:text-sm">Press [E] or Click to Interact</p>
+            </div>
+
+            <!-- Touch Controls for Mobile Devices -->
+            <div
+                class="md:hidden absolute bottom-4 left-4 right-4 flex justify-between items-center pointer-events-none z-10">
+                <div class="flex space-x-2 pointer-events-auto">
+                    <button id="btnLeft"
+                        class="w-11 h-11 bg-slate-900/80 active:bg-pink-600 border border-pink-500/50 rounded-full text-lg flex items-center justify-center text-white backdrop-blur">◀</button>
+                    <button id="btnRight"
+                        class="w-11 h-11 bg-slate-900/80 active:bg-pink-600 border border-pink-500/50 rounded-full text-lg flex items-center justify-center text-white backdrop-blur">▶</button>
+                    <button id="btnJump"
+                        class="w-11 h-11 bg-pink-600 active:bg-pink-500 border border-pink-400 rounded-full text-base flex items-center justify-center text-white shadow-lg">▲</button>
+                </div>
+                <button id="btnInteract"
+                    class="pointer-events-auto bg-pink-600 active:bg-pink-500 text-white font-bold px-4 py-3 rounded-xl text-xs pixel-font shadow-lg">INTERACT</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Instructions -->
+    <footer class="text-center py-2 text-xs text-slate-500">
+        @le._.who
+    </footer>
+
+    <!-- MODAL 1: Love Letter Popup -->
+    <div id="letterModal"
+        class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div
+            class="bg-gradient-to-b from-amber-50 to-orange-50 border-4 border-amber-800 text-slate-900 rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative transform transition-all scale-100 max-h-[85vh] flex flex-col">
+            <div class="text-center pb-4 border-b border-amber-200">
+                <span class="text-3xl">💌</span>
+                <h2 class="pixel-font text-pink-600 text-sm sm:text-base mt-2">HAPPY 5TH MONTHH EMMAAAA!!!</h2>
+            </div>
+
+            <div
+                class="py-4 overflow-y-auto space-y-3 text-sm sm:text-base leading-relaxed text-amber-950 flex-1 font-serif">
+                <p>emm...</p>
+                <p>yayyy, uda 5 bulannnnn.... lama banget tapi rasanyaaa, soalnya u not here... 🥺</p>
+                <p>i'm sorry em i sering bgt bikin u sedih, bikin u males and bikin mara... i gak pernah mau bikin u
+                    kayak gitu secara sengaja.</p>
+                <p>i mau u tau aja that i sayang u banget and u bikin i happy pas i lagi sedih or lagi males di sini,
+                    denger/liat u bikin i langsung seneng, langsung ilang rasa keselnya...
+                    Even, kalo u tiba2 ada tulis "i love you" aja i uda seneng bangetbgtbgttbgttt... I'm sorry for
+                    everything emm.. i mau terus belajar and berubah jdi someone yang gak bikin u ngerasa kyk ga di
+                    respect...
+                    i just hope kita bisa keep growing, belajar terus, and saling ngertiin..
+                </p>
+                <p>i miss you... i love you... bgt...
+                    AYO BIKIN AKUN IG!!!!</p>
+                <p class="font-bold text-pink-700 text-base pt-2">❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</p>
+            </div>
+
+            <div class="pt-4 border-t border-amber-200 text-center">
+                <button id="closeLetterBtn"
+                    class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-6 py-2.5 rounded-xl pixel-font text-xs transition shadow-md hover:shadow-pink-500/50">
+                    Close Letter & Open Door ✨
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Photo Memory Modal -->
+    <div id="photoModal"
+        class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div
+            class="bg-slate-900 border-2 border-pink-500/50 rounded-2xl max-w-md w-full p-5 text-slate-100 shadow-2xl relative">
+            <button id="closePhotoBtn" class="absolute top-3 right-3 text-slate-400 hover:text-white text-xl">✕</button>
+            <div class="text-center space-y-3">
+                <div
+                    class="w-full aspect-video bg-slate-800 rounded-xl overflow-hidden relative border border-slate-700 flex items-center justify-center">
+                    <img id="photoModalImg" src="" alt="Memory Photo" class="w-full h-full object-contain">
+                </div>
+                <h3 id="photoModalTitle" class="pixel-font text-pink-400 text-xs sm:text-sm">Memory Title</h3>
+                <p id="photoModalCaption" class="text-xs sm:text-sm text-slate-300 leading-relaxed">Memory Description
+                    goes here...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Date Settings Modal -->
+    <div id="settingsModal"
+        class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xs w-full p-5 text-slate-100 shadow-xl">
+            <h3 class="pixel-font text-xs text-pink-400 mb-3 text-center">Relationship Start Date</h3>
+            <p class="text-xs text-slate-400 mb-4 text-center">Set your exact dating start date to sync the museum
+                stopwatch!</p>
+
+            <input type="datetime-local" id="anniversaryInput"
+                class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-xs text-white mb-4">
+
+            <div class="flex justify-end space-x-2">
+                <button id="closeSettingsBtn"
+                    class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs">Cancel</button>
+                <button id="saveSettingsBtn"
+                    class="px-3 py-1.5 rounded-lg bg-pink-600 hover:bg-pink-500 text-white font-semibold text-xs">Save
+                    Date</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Script -->
+    <script>
+        // --- GAME STATE & CONFIGURATION ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Internal rendering resolution (crisp pixel aspect 16:9)
+        const GAME_WIDTH = 480;
+        const GAME_HEIGHT = 270;
+        canvas.width = GAME_WIDTH;
+        canvas.height = GAME_HEIGHT;
+
+        // Scene World Dimensions
+        const SCENE_WIDTHS = {
+            1: 520,  // Meadow
+            2: 1200  // Expanded Wide Panoramic Museum
+        };
+
+        // Camera Offset X
+        let cameraX = 0;
+
+        // Default Dating Anniversary Start Date
+        let startDate = localStorage.getItem('anniversaryDate')
+            ? new Date(localStorage.getItem('anniversaryDate'))
+            : new Date(Date.now() - (152 * 24 * 60 * 60 * 1000));
+
+        let currentScene = 1; // 1: Sunset Trail, 2: Museum
+        let letterOpened = false;
+        let doorUnlocked = false;
+
+        // Expanded Photo Gallery Memories Data (8 Large Frames)
+        const memories = [
+            { id: 1, x: 120, title: "SPM & Hamnet", caption: "HEHE, timezone hamnet dll... 😛", img: "5bln (1).jpg" },
+            { id: 2, x: 260, title: "Retreat", caption: "yayayay pas tauuuuuu, retreat d2", img: "5bln (2).jpg" },
+            { id: 3, x: 400, title: "Kelas", caption: "NONTON DI KELASSSS TERUSSS!", img: "5bln (3).jpg", offsetY: -25, scale: 1 },
+            { id: 4, x: 540, title: "Graduation", caption: "LULUSYAYAYAY, nooo juga...", img: "5bln (4).jpg" },
+            { id: 5, x: 680, title: "THE DAY", caption: "10 JUNIIIIIIIIII 2026! 💖", img: "5bln (5).jpg" },
+            { id: 6, x: 820, title: "1 Minggu Balik", caption: "Seminggu u balikkkkk aaahhhhh mau lagi", img: "5bln (6).jpg", offsetY: -25, scale: 1 },
+            { id: 7, x: 960, title: "Airport", caption: "REAL BYEBYE", img: "5bln (7).jpg", offsetY: -25, scale: 1 },
+            { id: 8, x: 1100, title: "LDR", caption: "VIDCALLSSS 🥺🥺🥺", img: "5bln (8).jpg", offsetY: -25, scale: 1 }
+        ];
+
+        const GROUND_Y = GAME_HEIGHT - 62;
+
+        // Player Unit (Holding Hands Duo)
+        const player = {
+            x: 150,
+            y: GROUND_Y,
+            vy: 0,
+            gravity: 0.45,
+            jumpForce: -7.5,
+            isGrounded: true,
+            wasGrounded: true,
+            width: 38,
+            height: 34,
+            speed: 2.0,
+            direction: 1, // 1: Right, -1: Left
+            isMoving: false,
+            animTimer: 0
+        };
+
+        // Key states
+        const keys = {
+            left: false,
+            right: false,
+            jump: false,
+            interact: false
+        };
+
+        // Heart Particles Container
+        const particles = [];
+
+        // --- AUDIO ENGINE (Procedural Synth Chiptune) ---
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let synthInterval = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playChiptuneNote(freq, type = 'sine', duration = 0.25) {
+            if (!audioCtx || !isAudioPlaying) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) { }
+        }
+
+        function toggleAudio() {
+            initAudio();
+            isAudioPlaying = !isAudioPlaying;
+            const audioBtn = document.getElementById('audioBtn');
+            const audioIcon = document.getElementById('audioIcon');
+            const audioText = document.getElementById('audioText');
+
+            if (isAudioPlaying) {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                audioBtn.classList.replace('bg-slate-800', 'bg-pink-600');
+                audioIcon.textContent = "🎵";
+                audioText.textContent = "Music On";
+                startMusicLoop();
+            } else {
+                audioBtn.classList.replace('bg-pink-600', 'bg-slate-800');
+                audioIcon.textContent = "🔇";
+                audioText.textContent = "Music Off";
+                clearInterval(synthInterval);
+            }
+        }
+
+        function startMusicLoop() {
+            clearInterval(synthInterval);
+            // Cute upbeat pentatonic scale notes (C Major / A Minor)
+            const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 392.00, 329.63];
+            let step = 0;
+            synthInterval = setInterval(() => {
+                if (isAudioPlaying) {
+                    playChiptuneNote(notes[step % notes.length], 'triangle', 0.3);
+                    if (step % 4 === 0) playChiptuneNote(130.81, 'sine', 0.4); // Bass note
+                    step++;
+                }
+            }, 300);
+        }
+
+        // --- INPUT HANDLING ---
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
+            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') {
+                if (!keys.jump) triggerJump();
+                keys.jump = true;
+            }
+            if (e.key === 'e' || e.key === 'E') triggerInteraction();
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
+            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') keys.jump = false;
+        });
+
+        // Touch Control Listeners
+        const btnLeft = document.getElementById('btnLeft');
+        const btnRight = document.getElementById('btnRight');
+        const btnJump = document.getElementById('btnJump');
+        const btnInteract = document.getElementById('btnInteract');
+
+        const bindTouch = (elem, keyName) => {
+            elem.addEventListener('touchstart', (e) => { e.preventDefault(); keys[keyName] = true; if (keyName === 'jump') triggerJump(); });
+            elem.addEventListener('touchend', (e) => { e.preventDefault(); keys[keyName] = false; });
+            elem.addEventListener('mousedown', () => { keys[keyName] = true; if (keyName === 'jump') triggerJump(); });
+            elem.addEventListener('mouseup', () => keys[keyName] = false);
+        };
+        bindTouch(btnLeft, 'left');
+        bindTouch(btnRight, 'right');
+        bindTouch(btnJump, 'jump');
+        btnInteract.addEventListener('click', triggerInteraction);
+
+        function triggerJump() {
+            initAudio();
+            if (player.isGrounded) {
+                player.vy = player.jumpForce;
+                player.isGrounded = false;
+                playChiptuneNote(440, 'square', 0.15);
+            }
+        }
+
+        // --- INTERACTION LOGIC ---
+        function triggerInteraction() {
+            initAudio();
+
+            if (currentScene === 1) {
+                // Pedestal / Letter trigger on the Right
+                if (player.x > 450) {
+                    openLetterModal();
+                }
+                // Door trigger on the Left
+                else if (player.x < 55 && doorUnlocked) {
+                    currentScene = 2;
+                    player.x = 1130; // Spawn near return door in wide museum
+                    spawnHeartBurst(player.x + 18, player.y);
+                }
+            } else if (currentScene === 2) {
+                // Check return door on the right
+                if (player.x > 1110) {
+                    currentScene = 1;
+                    player.x = 65; // Spawn back near left door in meadow
+                    return;
+                }
+                // Check photo memory frames
+                memories.forEach(mem => {
+                    if (Math.abs(player.x - mem.x) < 35) {
+                        openPhotoModal(mem);
+                    }
+                });
+            }
+        }
+
+        // --- RENDER FUNCTIONS ---
+        function drawPixelHeart(x, y, color = '#f43f5e', scale = 1) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x + 1 * scale, y, 2 * scale, 1 * scale);
+            ctx.fillRect(x + 4 * scale, y, 2 * scale, 1 * scale);
+            ctx.fillRect(x, y + 1 * scale, 7 * scale, 2 * scale);
+            ctx.fillRect(x + 1 * scale, y + 3 * scale, 5 * scale, 1 * scale);
+            ctx.fillRect(x + 2 * scale, y + 4 * scale, 3 * scale, 1 * scale);
+            ctx.fillRect(x + 3 * scale, y + 5 * scale, 1 * scale, 1 * scale);
+        }
+
+        // Draw Detailed Custom Player Sprites (Detailed Faces & Interlocked Hands)
+        function drawPlayer() {
+            const px = Math.round(player.x - cameraX);
+            const py = Math.round(player.y);
+            const bounce = player.isGrounded
+                ? (player.isMoving ? Math.sin(player.animTimer * 14) * 2 : Math.sin(player.animTimer * 3) * 0.7)
+                : -2;
+
+            // Character 1: Him (Left) & Character 2: Her (Right)
+            const c1X = player.direction === 1 ? px : px + 18;
+            const c2X = player.direction === 1 ? px + 18 : px;
+
+            // --- HIM (Boy Sprite) ---
+            // Hair (Wavy Messy Black Hair)
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(c1X + 1, py + 1 + bounce, 13, 7);
+            ctx.fillRect(c1X + 0, py + 3 + bounce, 2, 6);
+            ctx.fillRect(c1X + 13, py + 4 + bounce, 2, 4);
+
+            // Face & Skin
+            ctx.fillStyle = '#fecdd3'; // Soft skin tone
+            ctx.fillRect(c1X + 2, py + 7 + bounce, 10, 7);
+
+            // Face Details (Eyes & Smile)
+            ctx.fillStyle = '#0f172a'; // Eyes
+            ctx.fillRect(c1X + 4, py + 9 + bounce, 2, 2);
+            ctx.fillRect(c1X + 8, py + 9 + bounce, 2, 2);
+            ctx.fillStyle = '#fb7185'; // Cute blush
+            ctx.fillRect(c1X + 3, py + 11 + bounce, 2, 1);
+            ctx.fillRect(c1X + 9, py + 11 + bounce, 2, 1);
+            ctx.fillStyle = '#e11d48'; // Gentle smile
+            ctx.fillRect(c1X + 6, py + 12 + bounce, 2, 1);
+
+            // Germany White Jersey Body
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(c1X + 2, py + 14 + bounce, 10, 10);
+            ctx.fillStyle = '#0f172a'; // Black neck & sleeve trim
+            ctx.fillRect(c1X + 4, py + 14 + bounce, 6, 2);
+            ctx.fillRect(c1X + 1, py + 15 + bounce, 2, 4);
+            ctx.fillRect(c1X + 11, py + 15 + bounce, 2, 4);
+            ctx.fillStyle = '#eab308'; // Flag detail accent
+            ctx.fillRect(c1X + 6, py + 16 + bounce, 2, 1);
+
+            // Dark Baggy Jeans
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(c1X + 2, py + 24 + bounce, 10, 8);
+            ctx.fillStyle = '#0f172a'; // Seam line
+            ctx.fillRect(c1X + 6, py + 24 + bounce, 1, 8);
+
+            // White Shoes / Crocs
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(c1X + 2, py + 32 + bounce, 4, 2);
+            ctx.fillRect(c1X + 8, py + 32 + bounce, 4, 2);
+
+            // --- HER (Girl Sprite) ---
+            // Long Straight Black Hair
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(c2X + 1, py + 1 + bounce, 13, 6);
+            ctx.fillRect(c2X + 0, py + 3 + bounce, 3, 16); // Long hair strand left
+            ctx.fillRect(c2X + 12, py + 3 + bounce, 3, 16); // Long hair strand right
+
+            // Face & Skin
+            ctx.fillStyle = '#fecdd3';
+            ctx.fillRect(c2X + 3, py + 6 + bounce, 9, 7);
+
+            // Face Details (Eyes & Smile)
+            ctx.fillStyle = '#0f172a'; // Eyes
+            ctx.fillRect(c2X + 4, py + 8 + bounce, 2, 2);
+            ctx.fillRect(c2X + 8, py + 8 + bounce, 2, 2);
+            ctx.fillStyle = '#fb7185'; // Rosy blush
+            ctx.fillRect(c2X + 3, py + 10 + bounce, 2, 1);
+            ctx.fillRect(c2X + 9, py + 10 + bounce, 2, 1);
+            ctx.fillStyle = '#e11d48'; // Smile
+            ctx.fillRect(c2X + 6, py + 11 + bounce, 3, 1);
+
+            // White Graphic Tee Body
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(c2X + 3, py + 13 + bounce, 9, 9);
+            ctx.fillStyle = '#94a3b8'; // Print on shirt
+            ctx.fillRect(c2X + 5, py + 16 + bounce, 4, 3);
+
+            // Light Grey Relaxed Sweatpants
+            ctx.fillStyle = '#cbd5e1';
+            ctx.fillRect(c2X + 3, py + 22 + bounce, 9, 10);
+            ctx.fillStyle = '#94a3b8'; // Seam
+            ctx.fillRect(c2X + 7, py + 22 + bounce, 1, 10);
+
+            // White Shoes
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(c2X + 3, py + 32 + bounce, 4, 2);
+            ctx.fillRect(c2X + 8, py + 32 + bounce, 4, 2);
+
+
+            // --- HELD HANDS IN CENTER ---
+            const centerX = px + 17;
+            const centerY = py + 17 + bounce;
+
+            // Arms extending inward
+            ctx.fillStyle = '#fecdd3';
+            ctx.fillRect(c1X + (player.direction === 1 ? 11 : 0), centerY, 4, 3);
+            ctx.fillRect(c2X + (player.direction === 1 ? 0 : 11), centerY, 4, 3);
+
+            // Interlocked Hands & Floating Heart
+            ctx.fillRect(centerX - 2, centerY + 1, 5, 4);
+            drawPixelHeart(centerX - 3, centerY - 8, '#f43f5e', 1);
+        }
+
+        // --- SCENE 1: SUNSET MEADOW ---
+        function drawScene1() {
+            const worldW = SCENE_WIDTHS[1];
+
+            // Sunset Sky
+            const bgGrad = ctx.createLinearGradient(0, 0, 0, GAME_HEIGHT);
+            bgGrad.addColorStop(0, '#4c1d95');
+            bgGrad.addColorStop(0.4, '#c026d3');
+            bgGrad.addColorStop(0.7, '#fb923c');
+            bgGrad.addColorStop(1, '#fef08a');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+            // Sun (Parallax)
+            ctx.fillStyle = '#fff7ed';
+            ctx.beginPath();
+            ctx.arc(GAME_WIDTH / 2 - cameraX * 0.1, GAME_HEIGHT - 65, 35, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Parallax Pixel Clouds
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+            const cloudOffset = (Date.now() * 0.008) % worldW;
+            ctx.fillRect(100 - cameraX * 0.2 - cloudOffset, 30, 50, 12);
+            ctx.fillRect(350 - cameraX * 0.2 - cloudOffset, 45, 60, 14);
+
+            // Parallax Mountains
+            ctx.fillStyle = '#581c87';
+            ctx.beginPath();
+            ctx.moveTo(0 - cameraX * 0.3, GAME_HEIGHT - 35);
+            ctx.lineTo(100 - cameraX * 0.3, GAME_HEIGHT - 95);
+            ctx.lineTo(220 - cameraX * 0.3, GAME_HEIGHT - 35);
+            ctx.lineTo(360 - cameraX * 0.3, GAME_HEIGHT - 115);
+            ctx.lineTo(520 - cameraX * 0.3, GAME_HEIGHT - 35);
+            ctx.lineTo(worldW, GAME_HEIGHT);
+            ctx.lineTo(0, GAME_HEIGHT);
+            ctx.fill();
+
+            // Grassy Ground
+            ctx.fillStyle = '#15803d';
+            ctx.fillRect(-cameraX, GAME_HEIGHT - 35, worldW, 35);
+            ctx.fillStyle = '#22c55e';
+            ctx.fillRect(-cameraX, GAME_HEIGHT - 35, worldW, 4);
+
+            // Letter Pedestal (Far Right)
+            const pedX = 470 - cameraX;
+            const pedY = GAME_HEIGHT - 65;
+            ctx.fillStyle = '#64748b';
+            ctx.fillRect(pedX, pedY + 15, 22, 15);
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillRect(pedX + 4, pedY + 5, 14, 10);
+
+            // Floating Letter Envelope Icon
+            const hoverY = pedY + Math.sin(Date.now() * 0.005) * 3;
+            ctx.fillStyle = '#fef08a';
+            ctx.fillRect(pedX + 1, hoverY, 20, 12);
+            drawPixelHeart(pedX + 8, hoverY + 3, '#f43f5e', 0.6);
+
+            // Doorway on the LEFT side (Unlocks after letter is read)
+            if (doorUnlocked) {
+                const doorX = 20 - cameraX;
+                const doorY = GAME_HEIGHT - 75;
+                ctx.fillStyle = '#7c2d12';
+                ctx.fillRect(doorX - 2, doorY, 26, 40);
+                ctx.fillStyle = '#f43f5e';
+                ctx.fillRect(doorX + 2, doorY + 3, 18, 37);
+
+                // Sparkles
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(doorX + 6 + Math.sin(Date.now() * 0.01) * 5, doorY + 10, 2, 2);
+                ctx.fillRect(doorX + 10 + Math.cos(Date.now() * 0.01) * 4, doorY + 22, 2, 2);
+            }
+        }
+
+        // --- SCENE 2: EXPANDED PANORAMIC MUSEUM ---
+        function drawScene2() {
+            const worldW = SCENE_WIDTHS[2];
+
+            // Museum Wall
+            ctx.fillStyle = '#1e1b4b';
+            ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+            // Wall Trim
+            ctx.fillStyle = '#312e81';
+            ctx.fillRect(0, GAME_HEIGHT - 55, GAME_WIDTH, 5);
+
+            // Wooden Floor
+            ctx.fillStyle = '#78350f';
+            ctx.fillRect(0, GAME_HEIGHT - 50, GAME_WIDTH, 50);
+            ctx.fillStyle = '#451a03';
+            for (let i = -cameraX % 40; i < GAME_WIDTH; i += 40) {
+                ctx.fillRect(i, GAME_HEIGHT - 50, 2, 50);
+            }
+
+            // Return Door (Far Right in Museum)
+            const exitDoorX = 1140 - cameraX;
+            ctx.fillStyle = '#451a03';
+            ctx.fillRect(exitDoorX - 2, GAME_HEIGHT - 85, 26, 35);
+            ctx.fillStyle = '#fef08a';
+            ctx.fillRect(exitDoorX + 2, GAME_HEIGHT - 81, 18, 31);
+            ctx.fillStyle = '#92400e';
+            ctx.fillRect(exitDoorX + 14, GAME_HEIGHT - 65, 3, 3);
+
+            // --- GIANT REAL-TIME STOPWATCH (Centered at x: 600) ---
+            const clockX = 600 - cameraX - 85;
+            const clockY = 15;
+
+            ctx.fillStyle = '#92400e';
+            ctx.fillRect(clockX, clockY, 170, 50);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(clockX + 4, clockY + 4, 162, 42);
+
+            const now = new Date();
+            const diffMs = Math.max(0, now - startDate);
+            const totalSec = Math.floor(diffMs / 1000);
+            const days = Math.floor(totalSec / (3600 * 24));
+            const hours = Math.floor((totalSec % (3600 * 24)) / 3600);
+            const mins = Math.floor((totalSec % 3600) / 60);
+            const secs = totalSec % 60;
+            const months = (days / 30.44).toFixed(1);
+
+            ctx.fillStyle = '#f43f5e';
+            ctx.font = '8px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillText(`TIME TOGETHER`, 600 - cameraX, clockY + 16);
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '7px "Press Start 2P"';
+            ctx.fillText(`${days}D ${hours}H ${mins}M ${secs}S`, 600 - cameraX, clockY + 30);
+
+            ctx.fillStyle = '#fb7185';
+            ctx.font = '6px "Press Start 2P"';
+            ctx.fillText(`(~${months} MONTHS OF LOVE)`, 600 - cameraX, clockY + 40);
+            ctx.textAlign = 'left';
+
+            // --- 8 LARGE ELEGANT PHOTO FRAMES ---
+            memories.forEach(mem => {
+                const memScreenX = mem.x - cameraX;
+                const isNear = Math.abs(player.x - mem.x) < 35;
+
+                if (memScreenX > -60 && memScreenX < GAME_WIDTH + 60) {
+                    // Frame Dimensions (2.5x Larger)
+                    const frameW = 54;
+                    const frameH = 44;
+                    const frameY = 75;
+
+                    // Golden Gilded Outer Frame
+                    ctx.fillStyle = isNear ? '#f43f5e' : '#d97706';
+                    ctx.fillRect(memScreenX - frameW / 2, frameY, frameW, frameH);
+
+                    // Inner Frame Highlight
+                    ctx.fillStyle = isNear ? '#fb7185' : '#fef08a';
+                    ctx.fillRect(memScreenX - frameW / 2 + 3, frameY + 3, frameW - 6, frameH - 6);
+
+                    // Canvas Photo Background
+                    ctx.fillStyle = '#1e293b';
+                    ctx.fillRect(memScreenX - frameW / 2 + 6, frameY + 6, frameW - 12, frameH - 12);
+
+                    // Photo Detail Preview Icon
+                    drawPixelHeart(memScreenX - 6, frameY + 16, isNear ? '#f43f5e' : '#38bdf8', 1.8);
+
+                    // Frame Label / Number
+                    ctx.fillStyle = isNear ? '#f43f5e' : '#94a3b8';
+                    ctx.font = '6px "Press Start 2P"';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`#${mem.id}`, memScreenX, frameY + frameH + 10);
+                    ctx.textAlign = 'left';
+                }
+            });
+        }
+
+        // --- PARTICLES ENGINE ---
+        function spawnHeartParticle(x, y, vyScale = 1) {
+            particles.push({
+                x: x,
+                y: y,
+                vy: (-0.6 - Math.random() * 0.8) * vyScale,
+                vx: (Math.random() - 0.5) * 1.2,
+                life: 1,
+                color: Math.random() > 0.5 ? '#f43f5e' : '#ec4899'
+            });
+        }
+
+        function spawnHeartBurst(x, y) {
+            for (let i = 0; i < 12; i++) spawnHeartParticle(x, y, 1.3);
+        }
+
+        function updateAndDrawParticles() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= 0.025;
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    ctx.globalAlpha = p.life;
+                    drawPixelHeart(p.x - cameraX, p.y, p.color, 0.8);
+                    ctx.globalAlpha = 1.0;
+                }
+            }
+        }
+
+        // --- PROMPT & UI UPDATER ---
+        function updateUI() {
+            const actionPrompt = document.getElementById('actionPrompt');
+            const actionPromptText = document.getElementById('actionPromptText');
+
+            let showPrompt = false;
+
+            if (currentScene === 1) {
+                if (player.x > 450) {
+                    showPrompt = true;
+                    actionPromptText.textContent = letterOpened
+                        ? "Press [E] or Click to Re-read Letter 💌"
+                        : "Press [E] or Click to Read Letter 💌";
+                } else if (player.x < 55 && doorUnlocked) {
+                    showPrompt = true;
+                    actionPromptText.textContent = "Press [E] or Click to Enter Museum 🚪";
+                }
+            } else if (currentScene === 2) {
+                if (player.x > 1110) {
+                    showPrompt = true;
+                    actionPromptText.textContent = "Press [E] to Return to Meadow 🌲";
+                } else {
+                    memories.forEach(mem => {
+                        if (Math.abs(player.x - mem.x) < 35) {
+                            showPrompt = true;
+                            actionPromptText.textContent = `Press [E] to View Memory #${mem.id} "${mem.title}" 🖼️`;
+                        }
+                    });
+                }
+            }
+
+            if (showPrompt) {
+                actionPrompt.classList.remove('hidden');
+            } else {
+                actionPrompt.classList.add('hidden');
+            }
+        }
+
+        // --- MAIN GAME LOOP ---
+        function update(delta) {
+            // Horizontal Movement
+            player.isMoving = false;
+
+            if (keys.left) {
+                player.vx = -player.speed;
+                player.direction = -1;
+                player.isMoving = true;
+            } else if (keys.right) {
+                player.vx = player.speed;
+                player.direction = 1;
+                player.isMoving = true;
+            } else {
+                player.vx = 0;
+            }
+
+            player.x += player.vx;
+
+            // Gravity & Vertical Physics
+            player.vy += player.gravity;
+            player.y += player.vy;
+
+            // Ground Collision
+            if (player.y >= GROUND_Y) {
+                player.y = GROUND_Y;
+                player.vy = 0;
+                player.isGrounded = true;
+
+                // Landed this frame -> Trigger Sprinkle of Hearts!
+                if (!player.wasGrounded) {
+                    spawnHeartBurst(player.x + 18, GROUND_Y + 28);
+                }
+            }
+            player.wasGrounded = player.isGrounded;
+
+            // World Boundaries
+            const maxW = SCENE_WIDTHS[currentScene];
+            if (player.x < 10) player.x = 10;
+            if (player.x > maxW - 45) player.x = maxW - 45;
+
+            // Smooth Camera Follow
+            const targetCamX = player.x - GAME_WIDTH / 2 + player.width / 2;
+            cameraX += (targetCamX - cameraX) * 0.1;
+            cameraX = Math.max(0, Math.min(cameraX, maxW - GAME_WIDTH));
+
+            player.animTimer += 0.05;
+
+            // Spawn floating hearts while walking
+            if (player.isMoving && player.isGrounded && Math.random() < 0.12) {
+                spawnHeartParticle(player.x + 18, player.y + 25);
+            }
+
+            updateUI();
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+            if (currentScene === 1) {
+                drawScene1();
+            } else {
+                drawScene2();
+            }
+
+            drawPlayer();
+            updateAndDrawParticles();
+        }
+
+        let lastTime = 0;
+        function gameLoop(timestamp) {
+            const delta = timestamp - lastTime;
+            lastTime = timestamp;
+
+            update(delta);
+            render();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // --- MODAL HANDLERS ---
+        const letterModal = document.getElementById('letterModal');
+        const closeLetterBtn = document.getElementById('closeLetterBtn');
+        const photoModal = document.getElementById('photoModal');
+        const closePhotoBtn = document.getElementById('closePhotoBtn');
+        const settingsModal = document.getElementById('settingsModal');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+        const anniversaryInput = document.getElementById('anniversaryInput');
+
+        function openLetterModal() {
+            letterModal.classList.remove('hidden');
+            letterOpened = true;
+        }
+
+        closeLetterBtn.addEventListener('click', () => {
+            letterModal.classList.add('hidden');
+            if (!doorUnlocked) {
+                doorUnlocked = true;
+                spawnHeartBurst(25, GAME_HEIGHT - 60); // Sparkles at the new door on the left
+            }
+        });
+
+        function openPhotoModal(mem) {
+            document.getElementById('photoModalImg').src = mem.img;
+            document.getElementById('photoModalTitle').textContent = mem.title;
+            document.getElementById('photoModalCaption').textContent = mem.caption;
+            photoModal.classList.remove('hidden');
+        }
+
+        closePhotoBtn.addEventListener('click', () => photoModal.classList.add('hidden'));
+
+        // Settings Modal for Anniversary Date
+        settingsBtn.addEventListener('click', () => {
+            anniversaryInput.value = startDate.toISOString().slice(0, 16);
+            settingsModal.classList.remove('hidden');
+        });
+        closeSettingsBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
+        saveSettingsBtn.addEventListener('click', () => {
+            if (anniversaryInput.value) {
+                startDate = new Date(anniversaryInput.value);
+                localStorage.setItem('anniversaryDate', startDate.toISOString());
+            }
+            settingsModal.classList.add('hidden');
+        });
+
+        document.getElementById('audioBtn').addEventListener('click', toggleAudio);
+
+        // Click on Canvas to trigger interaction
+        canvas.addEventListener('click', () => {
+            triggerInteraction();
+        });
+
+        // Initialize & Run
+        window.onload = () => {
+            requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+
+</html>
